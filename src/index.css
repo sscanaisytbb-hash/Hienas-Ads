@@ -1,0 +1,397 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-display: 'Cormorant Garamond', Georgia, serif;
+    --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background-color: #0B131E;
+    color: #F9F6F0;
+    overflow-x: hidden;
+  }
+
+  h1, h2, .font-display {
+    font-family: var(--font-display);
+  }
+
+  .font-mono-num {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* =========================================================
+   ANIMAÇÕES NATALINAS (GPU Compositor Only: transform, opacity)
+   ========================================================= */
+@keyframes bellSwing {
+  0%, 100% {
+    transform: rotate(-10deg);
+  }
+  50% {
+    transform: rotate(10deg);
+  }
+}
+
+@keyframes floatSlow {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-6px) rotate(2deg);
+  }
+}
+
+@keyframes warmTwinkle {
+  0%, 100% {
+    opacity: 0.35;
+    transform: scale(0.92);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+}
+
+@keyframes snowFall {
+  0% {
+    transform: translate3d(0, -10vh, 0) rotate(0deg);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.75;
+  }
+  85% {
+    opacity: 0.75;
+  }
+  100% {
+    transform: translate3d(18px, 105vh, 0) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+.animate-bell {
+  transform-origin: top center;
+  animation: bellSwing 2.8s ease-in-out infinite;
+}
+
+.animate-bell-delayed {
+  transform-origin: top center;
+  animation: bellSwing 3.2s ease-in-out 0.9s infinite;
+}
+
+.animate-float-slow {
+  animation: floatSlow 4.5s ease-in-out infinite;
+}
+
+.animate-twinkle {
+  animation: warmTwinkle 2.4s ease-in-out infinite;
+}
+
+/* =========================================================
+   WIDGET DAS 3 PORTAS COM DESCONTO — COMPACTO E LADO A LADO NO CELULAR
+   Qualquer porta escolhida revela o prêmio máximo (75% OFF -> R$ 89,99)
+   e as outras duas revelam 10% e 25%.
+   ========================================================= */
+.pd-wrap {
+  position: relative;
+  font-family: var(--font-sans);
+  max-width: 440px;
+  margin: 0 auto;
+  --door-0: #b8892e;
+  --door-1: #1d4d3e;
+  --door-2: #7c1d26;
+  border-radius: 14px;
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(201, 162, 74, 0.4);
+  overflow: hidden;
+}
+
+/* inputs escondidos, mas ainda acessíveis via teclado */
+.pd-radio {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.pd-title {
+  background: linear-gradient(135deg, #162231 0%, #0f1824 100%);
+  color: #fff;
+  text-align: center;
+  padding: 14px 16px;
+  border-radius: 13px 13px 0 0;
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.35;
+  border-bottom: 1px solid rgba(201, 162, 74, 0.25);
+}
+
+.pd-title span {
+  color: #ffd54a;
+  font-weight: 800;
+}
+
+.pd-container {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 10px;
+  background: radial-gradient(circle at 50% 20%, #1a283b 0%, #0f1824 100%);
+  padding: 24px 10px 18px;
+  border-radius: 0 0 13px 13px;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.pd-door {
+  width: clamp(86px, 26vw, 112px);
+  height: clamp(144px, 43vw, 184px);
+  perspective: 800px;
+  cursor: pointer;
+  display: block;
+  position: relative;
+  flex-shrink: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.pd-door-frame {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.45), 0 0 0 1.5px rgba(201, 162, 74, 0.4);
+}
+
+.pd-door-inside {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at 50% 40%, #fff6d8 0%, #f4e2a0 45%, #e6c66b 100%);
+  padding: 4px;
+  text-align: center;
+}
+
+.pd-percent {
+  font-family: var(--font-mono);
+  font-size: clamp(22px, 6.5vw, 28px);
+  font-weight: 800;
+  color: #8a3b16;
+  opacity: 0;
+  transform: scale(0.6);
+  transition: opacity 0.35s ease 0.3s, transform 0.35s ease 0.3s;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
+  line-height: 1.05;
+}
+
+.pd-subtext {
+  font-size: 9px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: #6b4c1b;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.35s ease 0.4s, transform 0.35s ease 0.4s;
+  margin-top: 4px;
+  line-height: 1.1;
+}
+
+.pd-door-panel {
+  position: absolute;
+  inset: 0;
+  transform-origin: left center;
+  transition: transform 0.6s cubic-bezier(0.4, 0.1, 0.2, 1);
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.4));
+}
+
+.pd-door-panel svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.pd-door[data-index="0"] .pd-door-panel svg rect:first-child {
+  fill: var(--door-0);
+}
+.pd-door[data-index="1"] .pd-door-panel svg rect:first-child {
+  fill: var(--door-1);
+}
+.pd-door[data-index="2"] .pd-door-panel svg rect:first-child {
+  fill: var(--door-2);
+}
+
+.pd-door:hover .pd-door-panel {
+  transform: rotateY(-8deg);
+}
+
+/* ao escolher qualquer porta, as três abrem juntas e ficam travadas */
+.pd-wrap:has(.pd-radio:checked) .pd-door-panel {
+  transform: rotateY(-106deg);
+}
+.pd-wrap:has(.pd-radio:checked) .pd-percent {
+  opacity: 1;
+  transform: scale(1);
+}
+.pd-wrap:has(.pd-radio:checked) .pd-subtext {
+  opacity: 1;
+  transform: translateY(0);
+}
+.pd-wrap:has(.pd-radio:checked) .pd-door {
+  cursor: default;
+  pointer-events: none;
+}
+
+/* =========================================================
+   TABELA DE CONTEÚDO — A porta escolhida sempre mostra o
+   desconto máximo (75% OFF / R$ 89,99); as outras duas
+   mostram 10% e 25%.
+   ========================================================= */
+
+/* porta 0 escolhida */
+#pd-r0:checked ~ [data-index="0"] .pd-percent::after { content: "75%"; }
+#pd-r0:checked ~ [data-index="0"] .pd-subtext::after { content: "R$ 89,99!"; }
+#pd-r0:checked ~ [data-index="0"] .pd-door-inside {
+  background: radial-gradient(circle at 50% 40%, #fffdf5 0%, #ffe9a8 45%, #f3c94d 100%);
+  box-shadow: inset 0 0 18px rgba(255, 213, 74, 0.95);
+}
+#pd-r0:checked ~ [data-index="0"] .pd-percent { color: #b91c1c; }
+#pd-r0:checked ~ [data-index="1"] .pd-percent::after { content: "10%"; }
+#pd-r0:checked ~ [data-index="1"] .pd-subtext::after { content: "Básico"; }
+#pd-r0:checked ~ [data-index="2"] .pd-percent::after { content: "25%"; }
+#pd-r0:checked ~ [data-index="2"] .pd-subtext::after { content: "Médio"; }
+
+/* porta 1 escolhida */
+#pd-r1:checked ~ [data-index="1"] .pd-percent::after { content: "75%"; }
+#pd-r1:checked ~ [data-index="1"] .pd-subtext::after { content: "R$ 89,99!"; }
+#pd-r1:checked ~ [data-index="1"] .pd-door-inside {
+  background: radial-gradient(circle at 50% 40%, #fffdf5 0%, #ffe9a8 45%, #f3c94d 100%);
+  box-shadow: inset 0 0 18px rgba(255, 213, 74, 0.95);
+}
+#pd-r1:checked ~ [data-index="1"] .pd-percent { color: #b91c1c; }
+#pd-r1:checked ~ [data-index="0"] .pd-percent::after { content: "25%"; }
+#pd-r1:checked ~ [data-index="0"] .pd-subtext::after { content: "Médio"; }
+#pd-r1:checked ~ [data-index="2"] .pd-percent::after { content: "10%"; }
+#pd-r1:checked ~ [data-index="2"] .pd-subtext::after { content: "Básico"; }
+
+/* porta 2 escolhida */
+#pd-r2:checked ~ [data-index="2"] .pd-percent::after { content: "75%"; }
+#pd-r2:checked ~ [data-index="2"] .pd-subtext::after { content: "R$ 89,99!"; }
+#pd-r2:checked ~ [data-index="2"] .pd-door-inside {
+  background: radial-gradient(circle at 50% 40%, #fffdf5 0%, #ffe9a8 45%, #f3c94d 100%);
+  box-shadow: inset 0 0 18px rgba(255, 213, 74, 0.95);
+}
+#pd-r2:checked ~ [data-index="2"] .pd-percent { color: #b91c1c; }
+#pd-r2:checked ~ [data-index="0"] .pd-percent::after { content: "10%"; }
+#pd-r2:checked ~ [data-index="0"] .pd-subtext::after { content: "Básico"; }
+#pd-r2:checked ~ [data-index="1"] .pd-percent::after { content: "25%"; }
+#pd-r2:checked ~ [data-index="1"] .pd-subtext::after { content: "Médio"; }
+
+/* popup: aparece após a porta ser escolhida */
+.pd-popup {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(11, 19, 30, 0.95);
+  backdrop-filter: blur(6px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.45s ease;
+  border-radius: 13px;
+  padding: 12px;
+  z-index: 20;
+}
+
+.pd-wrap:has(.pd-radio:checked) .pd-popup {
+  opacity: 1;
+  pointer-events: auto;
+  transition-delay: 1.8s;
+}
+
+.pd-popup .pd-card {
+  text-align: center;
+  width: 100%;
+  max-width: 340px;
+  background: linear-gradient(145deg, #162336 0%, #0e1724 100%);
+  border: 1px solid rgba(201, 162, 74, 0.5);
+  border-radius: 12px;
+  padding: 16px 14px;
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.65);
+}
+
+.pd-popup .pd-check {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #2e9e4b 0%, #1e7033 100%);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  margin: 0 auto 8px;
+  box-shadow: 0 6px 16px rgba(46, 158, 75, 0.35);
+}
+
+.pd-popup h3 {
+  margin: 0 0 4px;
+  font-size: 16px;
+  color: #fff;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.pd-popup .pd-price {
+  font-size: 13px;
+  color: #cbd5e1;
+  margin: 6px 0 12px;
+}
+
+.pd-popup .pd-price strong {
+  color: #ffd54a;
+  font-size: 20px;
+  font-family: var(--font-mono);
+}
+
+.pd-popup .pd-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: linear-gradient(135deg, #d42426 0%, #a31517 100%);
+  color: #fff;
+  text-decoration: none;
+  padding: 11px 18px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  border: 1px solid rgba(255, 213, 74, 0.4);
+  box-shadow: 0 8px 20px rgba(212, 36, 38, 0.4);
+  transition: transform 0.15s ease, filter 0.15s ease;
+}
+
+.pd-popup .pd-cta:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-bell,
+  .animate-bell-delayed,
+  .animate-float-slow,
+  .animate-twinkle {
+    animation: none !important;
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "name": "Atelier Natalino — Conjunto 4 Renas LED + Árvore 1,30m",
+  "description": "Página de alta conversão do Conjunto Natalino Iluminado com 4 Renas LED, Árvore de 1,30m completa com sinos e adornos de Natal e jogo interativo das 3 Portas de Desconto.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
